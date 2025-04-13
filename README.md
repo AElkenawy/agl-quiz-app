@@ -1,6 +1,6 @@
-# agl_quiz_app
+# The AGL GSoC Quiz Flutter App
 
-This flutter app is part of AGL quiz for GSoC'25. More information could be found in [AGL Wiki page] (https://wiki.linuxfoundation.org/gsoc/2025-gsoc-agl).
+This flutter app is part of the AGL quiz for GSoC'25. More information could be found in [AGL Wiki page] (https://wiki.linuxfoundation.org/gsoc/2025-gsoc-agl).
 
 ## Project goal
 
