@@ -34,35 +34,66 @@ class MyAppState extends ChangeNotifier {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  // Track the cursor position
+  Offset _cursorPosition = Offset(0, 0);
+
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: MouseRegion(
+        onEnter: (_) {},
+        onExit: (_) {},
+        onHover: (PointerEvent details) {
+          setState(() {
+            _cursorPosition = details.localPosition;  // Update cursor position
+          });
+        },
+        child: Stack(
           children: [
-            NameText(),
-            SizedBox(height: 50),
-            if (appState.showImage)
-              Image.asset(
-                'assets/tlf_agl_img.png',
-                width: 200,
-                height: 200,
+            // Main content
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NameText(),
+                  SizedBox(height: 50),
+                  if (appState.showImage)
+                    Image.asset(
+                      'assets/tlf_agl_img.png',
+                      width: 200,
+                      height: 200,
+                    ),
+                  SizedBox(height: 50),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          appState.getNext(); // Show image
+                        },
+                        child: Text(appState.showImage ? 'Hide Image' : 'Show Image'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            SizedBox(height: 50),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    appState.getNext(); // Show image
-                  },
-                  child: Text(appState.showImage ? 'Hide Image' : 'Show Image'),
-                ),
-              ],
+            ),
+            // Cursor position in the bottom right
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: Text(
+                '(${_cursorPosition.dx.toStringAsFixed(2)}, ${_cursorPosition.dy.toStringAsFixed(2)})',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
             ),
           ],
         ),
@@ -93,8 +124,7 @@ class NameText extends StatelessWidget {
   }
 }
 
-// ...
-
+// Favorites Page
 class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -108,3 +138,4 @@ class FavoritesPage extends StatelessWidget {
     );
   }
 }
+
